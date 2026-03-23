@@ -1,0 +1,78 @@
+RELATÓRIO TÉCNICO DE INTELIGÊNCIA GEOGRÁFICA - DPU/PNUD
+Foco: Identificação de Gaps Assistenciais e Priorização de Expansão
+=====================================================================================
+
+Data de Geração: 2026-03-17 | Municípios Processados: 5570
+=====================================================================================
+
+1. DIAGNÓSTICO DE DISTRIBUIÇÃO REGIONAL
+   - P-valor (Qui-Quadrado): 0.0000
+   - Análise: A disparidade de atendimento entre regiões é SIGNIFICATIVA.
+
+2. MODELAGEM PREDITIVA (PREVALÊNCIA DA DPU)
+   - Técnica: Regressão Logística com Padronização Z-Score.
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:         dpu_presencial   No. Observations:                 5570
+Model:                          Logit   Df Residuals:                     5567
+Method:                           MLE   Df Model:                            2
+Date:                Tue, 17 Mar 2026   Pseudo R-squ.:                 0.06630
+Time:                        22:53:38   Log-Likelihood:                -3582.2
+converged:                       True   LL-Null:                       -3836.5
+Covariance Type:            nonrobust   LLR p-value:                3.435e-111
+===============================================================================
+                  coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------
+const          -3.6590      0.223    -16.422      0.000      -4.096      -3.222
+z_ivcad         0.4129      0.030     13.814      0.000       0.354       0.472
+log_pessoas     0.3914      0.025     15.728      0.000       0.343       0.440
+===============================================================================
+
+3. DETERMINANTES DE VULNERABILIDADE (OLS)
+   - Variável Dependente: IVCAD
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                  ivcad   R-squared:                       0.139
+Model:                            OLS   Adj. R-squared:                  0.138
+Method:                 Least Squares   F-statistic:                     299.4
+Date:                Tue, 17 Mar 2026   Prob (F-statistic):          3.56e-180
+Time:                        22:53:38   Log-Likelihood:                 12647.
+No. Observations:                5570   AIC:                        -2.529e+04
+Df Residuals:                    5566   BIC:                        -2.526e+04
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+====================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------
+const                0.5446      0.009     58.998      0.000       0.526       0.563
+idhm                -0.0099      0.002     -5.496      0.000      -0.013      -0.006
+expectativa_vida    -0.0034      0.000    -24.763      0.000      -0.004      -0.003
+log_pib             -0.0002      0.000     -0.808      0.419      -0.001       0.000
+==============================================================================
+Omnibus:                     1203.477   Durbin-Watson:                   2.040
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             3007.649
+Skew:                           1.181   Prob(JB):                         0.00
+Kurtosis:                       5.716   Cond. No.                     2.06e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 2.06e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+4. MÉTRICAS DE IMPACTO E VOLUMETRIA MÉDIA
+   - Média de Famílias em Municípios SEM DPU: 4,513
+   - Média de Famílias em Municípios COM DPU: 11,156
+
+5. CLASSIFICAÇÃO TOP 5: PRIORIDADE PARA EXPANSÃO INSTITUCIONAL
+-------------------------------------------------------------------------------------
+Ranking  | Município                 | UF         | IVCAD        | Score     
+-------------------------------------------------------------------------------------
+1        | Jordão                    | ACRE       | 0.419        | 96.8545   
+2        | Campos Altos              | MINAS GERAIS | 0.414        | 93.2631   
+3        | Campinápolis              | MATO GROSSO | 0.410        | 91.7083   
+4        | Quilombo                  | SANTA CATARINA | 0.410        | 91.3188   
+5        | Nova Nazaré               | MATO GROSSO | 0.402        | 88.1260   
+-------------------------------------------------------------------------------------
+
+>>> FIM DO RELATÓRIO TÉCNICO <<<

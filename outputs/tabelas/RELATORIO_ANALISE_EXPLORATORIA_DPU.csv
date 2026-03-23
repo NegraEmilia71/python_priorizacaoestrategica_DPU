@@ -1,0 +1,66 @@
+DOCUMENTAÇÃO TÉCNICA: CONSOLIDAÇÃO VIA CHAVE PRIMÁRIA IBGE
+======================================================================
+
+1. CARGA DE DADOS E ENCODING
+   - Técnica: Carga Multinível (Fallback Strategy).
+   - Justificativa: Tratamento preventivo contra 'UnicodeDecodeError'. Arquivos processados 
+     com sucesso independentemente da origem (UTF-8, ISO ou Latin-1).
+
+2. MATCH INTELIGENTE (DPU)
+   - Técnica: Normalização Canônica (NFKD) e Regex.
+   - Descrição: Remoção de acentos, caracteres especiais e sufixos de UF (ex: JORDAO_AC -> JORDAO). 
+   - Resultado: Resolvido o erro onde colunas de atuação da DPU apareciam como 'False' ou vazias.
+
+3. SANITIZAÇÃO DE DADOS NUMÉRICOS
+   - Técnica: Conversão de Localidade Brasileira (Regex/Replace).
+   - Justificativa: Conversão de formatos brasileiros (1.234,56) para o padrão float (1234.56).
+   - Resultado: Garantia de integridade para cálculos estatísticos e plotagem de mapas, 
+     eliminando erros de interpretação de milhar e decimal.
+
+4. LEFT-JOIN STRATEGY (CÓDIGO IBGE)
+   - Técnica: Uso do 'cod. ibge' como identificador único universal para o merge.
+   - Justificativa: Eliminação de colisões por nomes duplicados ou erros de grafia.
+   - Resultado: Base final estabilizada em exatamente 5570 registros.
+
+5. IMPUTAÇÃO GRANULAR (ESTADUAL)
+   - Técnica: Imputação baseada na média do grupo 'Estado' (derivado do prefixo IBGE).
+   - Justificativa: Municípios com ausência de dados sociais no IVCAD são preenchidos 
+     pela média de sua vizinhança geográfica imediata, média regional, preserva a 
+     coerência socioeconômica da localidade geográfica.
+
+6. INTEGRIDADE DE DADOS (DEDUPLICAÇÃO)
+   - A base IVCAD foi saneada de 5571 para 5570 registros através do descarte de 
+     IDs redundantes, garantindo que o Power BI não encontre duplicidades.
+
+7. INSPEÇÃO TÉCNICA DE TIPOS
+----------------------------------------
+cod. ibge                      int64
+pib                            int64
+cod_str                          str
+Estado                           str
+Regiao                           str
+Municipio                        str
+Familias                       Int64
+Pessoas                        Int64
+% relativo ao Censo 2022         str
+IVCAD                        float64
+NC                           float64
+DPI                          float64
+DCA                          float64
+TQA                          float64
+DR                           float64
+CH                           float64
+idhm                         float64
+expectativa_vida             float64
+chave                            str
+Subsecao_Judiciaria TRF          str
+Atuacao_DPU                      str
+DPU_P_Bool                    object
+DPU_R_Bool                    object
+DPU_Presencial                object
+DPU_Remoto                    object
+Tem_DPU                          str
+Indice_Vulnerabilidade      category
+Vulnerabilidade_Rank            int8
+
+Relatório gerado em 2026-03-17. Total de registros: 5570
